@@ -13,9 +13,9 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src'), 
     },
   },
-  base: '/e21-3yp-RAID/webapp/',
+  base: process.env.VERCEL ? '/' : '/e21-3yp-RAID/webapp/',
   build: {
-    outDir: '../docs/webapp',
+    outDir: process.env.VERCEL ? 'dist' : '../docs/webapp',
     emptyOutDir: true, 
   },
 
