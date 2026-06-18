@@ -7,7 +7,7 @@ const LiveMap = () => {
     <div className="flex flex-col h-screen bg-gray-100">
       <PageHeader title="Live Map" />
       <main className="flex-1 overflow-hidden">
-        <MapComponent />
+        <MapComponent markers={[]} />
       </main>
       <BottomNav />
     </div>
