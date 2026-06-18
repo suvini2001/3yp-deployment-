@@ -111,12 +111,15 @@ export function useTelemetry(deviceId: string, sensorId: string) {
   const [isConnected, setIsConnected] = useState<boolean>(false);
 
   useEffect(() => {
+    const apiBaseUrl = (import.meta.env.VITE_API_BASE_URL as string | undefined) ?? "http://localhost:8080";
+    const wsUrl = (import.meta.env.VITE_BACKEND_WS_URL as string | undefined) ?? "http://localhost:8080/raid-websocket";
+
     // 1. Fetch Historical Data (Cold Path)
     // NOTE: The URL is /api/cracks/{deviceId}/{sensorId}
     // The controller passes these to getCracksByDeviceAndSensor(deviceId, sensorId)
     // The repository queries DynamoDB WHERE SensorID = sensorId AND deviceId = deviceId
     // So sensorId here MUST match the DynamoDB Partition Key value (e.g. "LEFT", "RIGHT", "CENTER")
-    fetch(`http://localhost:8080/api/cracks/${deviceId}/${sensorId}`)
+    fetch(`${apiBaseUrl}/api/cracks/${deviceId}/${sensorId}`)
       .then(res => {
         if (!res.ok) throw new Error(`HTTP ${res.status}`);
         return res.json();
@@ -132,7 +135,7 @@ export function useTelemetry(deviceId: string, sensorId: string) {
 
     // 2. Establish Real-Time Connection (Hot Path)
     const stompClient = new Client({
-      webSocketFactory: () => new SockJS("http://localhost:8080/raid-websocket"),
+      webSocketFactory: () => new SockJS(wsUrl),
       reconnectDelay: 5000,
       
       onConnect: () => {

@@ -17,11 +17,13 @@ public class CorsConfig implements WebMvcConfigurer {
         registry.addMapping("/api/**")
 
                 // Define which frontend URLs (origins) are allowed to access this backend
-                .allowedOrigins(
+                .allowedOriginPatterns(
                         "https://cepdnaclk.github.io", // deployed frontend (GitHub Pages)
                         "http://localhost:3000", // React development server
                         "http://localhost:5173", // Vite development server
-                        "http://localhost:5174"  // Vite development server (alternate port)
+                        "http://localhost:5174", // Vite development server (alternate port)
+                        "https://*.vercel.app",  // Vercel deployed frontend
+                        "https://*.railway.app"  // Railway deployed backend/frontend
                 )
 
                 // Define which HTTP methods are allowed for cross-origin requests
